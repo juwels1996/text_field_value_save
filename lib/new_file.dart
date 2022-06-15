@@ -130,6 +130,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class ColoredContainer extends StatelessWidget {
+  TextEditingController textEditingController=TextEditingController();
   ColoredContainer(this._isContainerVisible);
   final bool _isContainerVisible;
 
@@ -141,6 +142,7 @@ class ColoredContainer extends StatelessWidget {
       color: Colors.red,
       height: _isContainerVisible ? 70.0 : 0.0,
       width: _isContainerVisible ? 400.0 : 0.0,
+
     ));
   }
 }

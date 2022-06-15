@@ -1,7 +1,6 @@
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-
+import 'package:typing_textshowing_another_field/widget2.dart';
 import 'new_file.dart';
 
 void main() {
@@ -17,10 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
-      home:  HomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -31,105 +29,167 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController phoneController=TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController textController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
-
-  bool buttonenabled = true;
+  bool textenabled = true;
   bool _isContainerVisible = false;
+  bool isContainerVisible = false;
 
-  
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(""),
       ),
       body: Column(
         children: <Widget>[
-          // Badge(
-          //   badgeContent: Text("11"),
-          //   child: Icon(Icons.phone_callback,size:60,),
-          //   badgeColor: Colors.blue,
-          // ),
-          //
-          //
-          // SizedBox(height: 5,),
-          // GestureDetector(
-          //   onTap: (){},
-          //   child: Container(
-          //     height: 60,
-          //     width: 100,
-          //     child: ColoredBox(
-          //       color: Colors.deepPurple,
-          //       child: Center(child: Text("Click")),
-          //     ),
-          //   ),
-          //
-          // ),
-          _isContainerVisible?Row(
-      children: [
-      Container(
-      margin: EdgeInsets.only(left: 40),
-      height: 100,
-      width: 360,
-      child: Card(
-        elevation: 7,
-        color: Colors.red,
-        child: Container(
-            child: Center(child: Text(phoneController.text,))),
-      ),
-    ),
-    SizedBox(width: 6,),
-    ],
-    ) :
-          SizedBox(width: 6,),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isContainerVisible = !_isContainerVisible;
-              });
-            },
-            icon: Icon(
-              Icons.add,
-            ),
-            iconSize: 40.0,
-          ),
-
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(left: 40,top: 20),
+                height: 100,
+                width: 360,
                 child: Card(
+                  elevation: 7,
                   color: Colors.yellow,
-                  elevation: 5,
                   child: Container(
-
-                    height: 100,
-                    width: 350,
-                    child: Center(
-                      child: Text(phoneController.text,
-                        style: TextStyle(color: Colors.white,fontSize: 18),),
-                    ),
-                  ),
+                      child: Center(
+                          child: Text(
+                    phoneController.text,
+                  ))),
                 ),
               ),
-
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isContainerVisible = !_isContainerVisible;
+                  });
+                },
+                icon: Icon(
+                  Icons.add,
+                ),
+                iconSize: 30.0,
+              ),
             ],
           ),
-          TextField(
-              controller: phoneController,
-              onChanged:(value){
-                setState(() {
-                  phoneController.text;
-                });
-              }
-          ),
-          SizedBox(height: 12,),
 
-          ElevatedButton(onPressed: (){},
-              child: Text("Save",style: TextStyle(fontSize: 20),)),
+
+          _isContainerVisible
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 360,
+                      child: Card(
+                        elevation: 7,
+                        color: Colors.red,
+                        child: Container(
+                            child: Center(
+                                child: Text(
+                          textController.text,
+                        ))),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isContainerVisible = !isContainerVisible;
+                              });
+                            },
+                            icon: Icon(Icons.add)),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isContainerVisible
+                                    ? textController
+                                    : emailController;
+                              });
+                            },
+                            icon: Icon(Icons.edit))
+                      ],
+                    )
+                  ],
+                )
+              : Container(),
+          SizedBox(
+            height: 12,
+          ),
+          isContainerVisible
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 360,
+                      child: Card(
+                        elevation: 7,
+                        color: Colors.green,
+                        child: Container(
+                            child: Center(
+                                child: Text(
+                          emailController.text,
+                        ))),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              _isContainerVisible = _isContainerVisible;
+                            },
+                            icon: Icon(Icons.add)),
+                      ],
+                    )
+                  ],
+                )
+              : Container(),
+          TextField(
+              controller:
+
+                  _isContainerVisible ? textController : phoneController,
+              onChanged: (value) {
+                setState(() {
+                  _isContainerVisible?emailController.text:phoneController;
+                  // _isContainerVisible ? phoneController.text:textController.text;
+                });
+              }),
+          SizedBox(
+            height: 12,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      height: 400,
+                      color: Colors.white,
+                      width: double.infinity,
+                      child: AlertDialog(
+                        // Retrieve the text the that user has entered by using the
+                        // TextEditingController.
+                        content: Column(
+                          children: [
+                            Text(phoneController.text),
+                            Text(textController.text),
+                            Text(emailController.text),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Text(
+                "Save",
+                style: TextStyle(fontSize: 20),
+              )),
           SizedBox(
             height: 20,
           ),
@@ -138,40 +198,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-// class ColoredContainer extends StatelessWidget {
-//
-//   ColoredContainer(this._isContainerVisible,);
-//   final bool _isContainerVisible;
-//   TextEditingController phoneController=TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center (
-//         child: AnimatedContainer (
-//             duration: Duration(seconds: 0),
-//             color: Colors.red,
-//             height: _isContainerVisible ? 70.0 : 0.0,
-//             width: _isContainerVisible ? 400.0 : 0.0,
-//             child: _isContainerVisible ?
-//               Card(
-//                 color: Colors.yellow,
-//                 elevation: 5,
-//                 child: Container(
-//                   margin: EdgeInsets.only(left: 40),
-//                   height: 100,
-//                   width: 350,
-//                   child: Center(
-//                     child: Text(phoneController.text,
-//                       style: TextStyle(color: Colors.white,fontSize: 18),),
-//                   ),
-//                 ),
-//               ):
-//
-//
-//
-//                 Container(color: Colors.yellow,)
-//         )
-//     );
-//   }
-//
-// }
